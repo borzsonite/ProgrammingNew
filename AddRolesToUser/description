@@ -1,3 +1,5 @@
+https://www.codejava.net/frameworks/spring-boot/spring-security-add-roles-to-user-examples
+
 1. Добавляем нужные зависимости
 2. В application.properties задаем настройки для БД
 3. Заполняем базу начальными значениями (не забыть прописать касскад для ролей у юзера!)

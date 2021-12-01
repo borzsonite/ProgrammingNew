@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.sergeyrozhkov.addrolestouser.models.User;
 import ru.sergeyrozhkov.addrolestouser.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserServiceImp implements UserService{
     private UserRepository userRepository;
@@ -20,8 +22,14 @@ public class UserServiceImp implements UserService{
         user.getRoles().add(roleService.findByName("ROLE_USER"));
     }
 
-    public void test() {
+    @Override
+    public List<User> listAll() {
+        return userRepository.findAll();
+    }
 
+    @Override
+    public User findById(Long id) {
+       return userRepository.findById(id).get();
     }
 
     @Override
