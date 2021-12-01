@@ -1,0 +1,51 @@
+https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
+
+1. Добавить зависимости: web, dataJPA, mysql, security, thymeleaf, lombok, devTools
+2. Настройка datasource (application.property)
+3. Добавляем сущность юзера и его репозиторий
+4. Добавляем тесты /test/java/ru/sergeyrozhkov/registrationandlogin/UserRepositoryTest.java
+5. Добавляем в контроллер эндпоинт для домашней страницы и саму страницу
+6. Добавляем в контроллер эндпоинт для вызова формы регистрации и саму форму
+7. Добавляем в контроллер эндпоинт регистрации @Post
+    - метод принимает параметром объект с формы регистрации public String processRegister(User user)
+    - далее пароль кэшируется с помощью bCryptb  и перезаписывается;
+    - новый пользователь сохраняется в базу.
+    - возвращатся страница успешной регистрации
+8. Добавляем секьюрность:
+    - class User implements UserDetails
+    - class UserService implements UserDetailsService
+    - в UserRepository добавляем кастомный запрос
+        public interface UserRepository extends JpaRepository<User, Long> {
+            @Query("SELECT u FROM User u WHERE u.email = ?1")
+            public User findByEmail(String email);
+
+        }
+    - добавляем конфигурационный  файл
+    @Configuration
+    @EnableWebSecurity
+    public class WebSecurityConfig extends WebSecurityConfigurerAdapter
+
+    - в конфиг добавляем поля DataSource, UserService
+    - настраиваем DaoAuthenticationProvider
+            @Bean
+            public DaoAuthenticationProvider authenticationProvider() {
+                DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+                authenticationProvider.setUserDetailsService(userService);
+                authenticationProvider.setPasswordEncoder(passwordEncoder());
+                return authenticationProvider;
+            }
+    - настраиваем BCryptEncoder
+            @Bean
+            public BCryptPasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+            }
+    - переопределяем метод configure()
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(authenticationProvider());
+        }
+    - переопределяем метод configure() и прописываем antMatchers()
+
+9. Добавляем в контроллер эндпоинт /users и саму страницу, с выводом всех пользователей
+
+

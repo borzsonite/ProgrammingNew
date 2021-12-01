@@ -1,0 +1,9 @@
+1. Добавляем нужные зависимости
+2. В application.properties задаем настройки для БД
+3. Заполняем базу начальными значениями (не забыть прописать касскад для ролей у юзера!)
+4. В RoleService прописываем метод добавления  дефолтной роли новому юзеру:
+        public void registerDefaultUser(User user) {
+            user.getRoles().add(roleService.findByName("ROLE_USER"));
+        }
+5.
+
